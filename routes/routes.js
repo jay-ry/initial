@@ -44,23 +44,6 @@ router.post("/update/:id", async (req, res) => {
   }
 });
 
-// router.get("/delete/:id", (req, res) => {
-//   let id = req.params.id;
-//   User.findByIdAndDelete(id, (err, result) => {
-//     if (err) {
-//       res.json({
-//         message: err.message,
-//       });
-//     } else {
-//       req.session.message = {
-//         type: "info",
-//         message: "user deleted successfully",
-//       };
-//       res.redirect("/");
-//     }
-//   });
-// });
-
 router.get("/delete/:id", async (req, res) => {
   let id = req.params.id;
   try {
@@ -74,6 +57,15 @@ router.get("/delete/:id", async (req, res) => {
     res.json({
       message: err.message,
     });
+  }
+});
+
+router.get("/create", async (req, res) => {
+  try {
+    const users = await User.find().exec();
+    res.render("create", { title: "Add Members" });
+  } catch (err) {
+    res.json({ message: err.message });
   }
 });
 
@@ -96,10 +88,6 @@ router.post("/create", async (req, res) => {
 
 router.use((req, res) => {
   res.status(404).render("404");
-});
-
-router.get("/users", (req, res) => {
-  res.send("All users");
 });
 
 module.exports = router;
